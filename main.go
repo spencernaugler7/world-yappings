@@ -6,9 +6,21 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"world.com/yappings/data"
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Fatal(err)
+		panic(err)
+	}
+
+	if err := data.SetUpDatabase(); err != nil {
+		log.Fatal(err)
+		panic(err)
+	}
+	
 	server := gin.Default()
 
 	server.Static("/assets", "./assets")
