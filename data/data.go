@@ -11,6 +11,7 @@ type Saying struct {
 	gorm.Model
 
 	Original string
+	Translation string
 	Meaning string
 	WhenToUse sql.NullString
 	Example sql.NullString
@@ -27,11 +28,15 @@ type Tag struct {
 }
 
 func SetUpDatabase() {
-  db, err := gorm.Open(sqlite.Open("sayings.db"), &gorm.Config{})
-  if err != nil {
-    panic("failed to connect database")
-  }
+	db, err := gorm.Open(sqlite.Open("sayings.db"), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
 
-  db.AutoMigrate(&Saying{})
+	db.AutoMigrate(
+		&Saying{},
+		&Tag{},
+	)
+  
 }
 

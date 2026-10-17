@@ -19,6 +19,8 @@ with these attributes
 
 - `Original`
     - saying in it's original language
+- `Translation`
+    - literal translation to english
 - `Meaning`
     - english meaning of the saying
 - `When to use` (Optional)
