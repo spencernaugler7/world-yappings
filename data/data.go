@@ -10,6 +10,7 @@ import (
 
 type Saying struct {
 	gorm.Model
+
 	ID uint
 	Original string
 	Meaning string
@@ -23,9 +24,11 @@ type Saying struct {
 
 type Tag struct {
 	gorm.Model
+
+	ID uint
 	Name string
 	Created time.Time
-	LastUpdated time.Time
+	LastUpdated sql.NullTime
 
 	Sayings []*Saying `gorm:"many2many:Tag_Saying;"`
 }
