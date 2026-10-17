@@ -28,3 +28,9 @@ go.work
 
 # ignore gin binary
 gin-bin
+
+# ignore the env file
+.env
+
+# ignore local testing database
+yappings.db
