@@ -2,7 +2,6 @@ package data
 
 import (
 	"database/sql"
-	"time"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -11,13 +10,10 @@ import (
 type Saying struct {
 	gorm.Model
 
-	ID uint
 	Original string
 	Meaning string
 	WhenToUse sql.NullString
 	Example sql.NullString
-	Created time.Time
-	LastUpdated sql.NullTime
 
 	Tags []*Tag `gorm:"many2many:Tag_Saying;"`
 }
@@ -25,10 +21,7 @@ type Saying struct {
 type Tag struct {
 	gorm.Model
 
-	ID uint
 	Name string
-	Created time.Time
-	LastUpdated sql.NullTime
 
 	Sayings []*Saying `gorm:"many2many:Tag_Saying;"`
 }
