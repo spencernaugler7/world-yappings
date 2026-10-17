@@ -1,7 +1,6 @@
 package main
 
 import (
-	"html/template"
 	"log"
 	"net/http"
 
@@ -13,13 +12,14 @@ func main() {
 
 	server := gin.Default()
 	server.Static("/assets", "./assets")
-	// server.LoadHTMLGlob("templates/*")
-	html := template.Must(template.ParseFiles("index.html"))
+	server.LoadHTMLGlob("templates/*")
 
 	server.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H {
 			"title": "Hello World",
+			"name": "Ben Tennison",
 		})
+		log.Println("Wrote the name")
 	})
 
 	if err := server.Run(); err != nil {
