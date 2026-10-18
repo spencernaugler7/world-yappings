@@ -40,7 +40,9 @@ Cartesian record to link tags to sayings.
 
 ### Functionality
 
+- [ ] create  a saying 
+- [ ] edit a saying
+    - [ ] ability to add tags 
 - [ ] ability to search for sayings 
     - [ ] search by title by default
     - [ ] Be able to search by tag
-- [ ] ability to add tags
