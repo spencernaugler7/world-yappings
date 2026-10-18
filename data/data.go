@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"os"
 
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -19,11 +19,11 @@ func (m *DataError) Error() string {
 type Saying struct {
 	gorm.Model
 
-	Original string
+	Original    string
 	Translation string
-	Meaning string
-	WhenToUse sql.NullString
-	Example sql.NullString
+	Meaning     string
+	WhenToUse   sql.NullString
+	Example     sql.NullString
 
 	Tags []*Tag `gorm:"many2many:Tag_Saying;"`
 }
@@ -37,15 +37,15 @@ type Tag struct {
 }
 
 func SetUpDatabase() error {
-	db, err := gorm.Open(sqlite.Open("sayings.db"), &gorm.Config{})
-	
-	if err != nil {
-		return err
-	}
-
 	connString := os.Getenv("WORLD_SAYINGS_CONNECTION_STRING")
 	if connString == "" {
-		return &DataError{ "connection string not found in enviornment variable. Ensure you create a .env file (template is .env.template)" }
+		return &DataError{"Connection not resolved. Ensure you create a .env file modeled after .env.template"}
+	}
+
+	db, err := gorm.Open(postgres.Open(connString), &gorm.Config{})
+
+	if err != nil {
+		return err
 	}
 
 	migrateError := db.AutoMigrate(
@@ -55,4 +55,3 @@ func SetUpDatabase() error {
 
 	return migrateError
 }
-
