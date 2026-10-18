@@ -20,7 +20,7 @@ func main() {
 		log.Fatal(err)
 		panic(err)
 	}
-	
+
 	server := gin.Default()
 
 	server.Static("/assets", "./assets")
