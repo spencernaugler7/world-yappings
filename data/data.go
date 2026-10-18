@@ -36,16 +36,16 @@ type Tag struct {
 	Sayings []*Saying `gorm:"many2many:Tag_Saying;"`
 }
 
-func SetUpDatabase() error {
+func SetUpDatabase() (*gorm.DB, error) {
 	connString := os.Getenv("WORLD_SAYINGS_CONNECTION_STRING")
 	if connString == "" {
-		return &DataError{"Connection not resolved. Ensure you create a .env file modeled after .env.template"}
+		return nil, &DataError{"Connection not resolved. Ensure you create a .env file modeled after .env.template"}
 	}
 
 	db, err := gorm.Open(postgres.Open(connString), &gorm.Config{})
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	migrateError := db.AutoMigrate(
@@ -53,5 +53,9 @@ func SetUpDatabase() error {
 		&Tag{},
 	)
 
-	return migrateError
+	if migrateError != nil {
+		return nil, migrateError
+	}
+
+	return db, nil
 }

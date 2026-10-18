@@ -16,19 +16,31 @@ func main() {
 		panic(err)
 	}
 
-	if err := data.SetUpDatabase(); err != nil {
+	// ctx := context.Background()
+	db, err := data.SetUpDatabase()
+
+	if err != nil {
 		log.Fatal(err)
 		panic(err)
 	}
 
 	server := gin.Default()
-
-	server.Static("/assets", "./assets")
 	templates := template.Must(template.ParseGlob("./templates/*.html"))
 	server.SetHTMLTemplate(templates)
 
+	server.Static("/assets", "./assets")
 	server.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{})
+		var sayings []data.Saying
+		db.Find(&sayings)
+		// sayings, err := gorm.G[data.Saying](db)
+
+		if err != nil {
+			panic(err)
+		}
+
+		c.HTML(http.StatusOK, "index.html", gin.H{
+			"sayings": sayings,
+		})
 		log.Println("Wrote the name")
 	})
 
