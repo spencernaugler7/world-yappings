@@ -18,3 +18,6 @@ build:
 
 tidy:
     go mod tidy
+
+clean:
+    go clean
