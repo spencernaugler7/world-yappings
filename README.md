@@ -1,6 +1,7 @@
 # World Sayings Archive
 
 ### setup
+
 install the [just](https://github.com/casey/just#installation) cmdline utility
 
 then run this command in root dir

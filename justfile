@@ -8,7 +8,7 @@ default: watch
 watch: server-watch open-firefox
 
 server-watch:
-    gin run main.go --bin gin-bin
+    air server --port 3000
     
 open-firefox:
     firefox --new-window "http://localhost:3000"
