@@ -8,7 +8,7 @@ alias t := tidy
 watch: server-watch open-firefox
 
 server-watch:
-    gin run main.go
+    gin run main.go --bin gin-bin
     
 open-firefox:
     firefox --new-window "http://localhost:3000"
