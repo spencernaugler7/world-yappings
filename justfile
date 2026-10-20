@@ -1,8 +1,8 @@
-
-default: watch
-
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 alias b := build
 alias t := tidy
+
+default: watch
 
 [parallel]
 watch: server-watch open-firefox
@@ -21,3 +21,6 @@ tidy:
 
 clean:
     go clean
+
+install-deps:
+    go install github.com/air-verse/air@latest

@@ -1,6 +1,15 @@
 # World Sayings Archive
 
-### Library Docs
+### setup
+install the [just](https://github.com/casey/just#installation) cmdline utility
+
+then run this command in root dir
+
+```bash
+just install-deps
+```
+
+### Dependancy Docs
 
 - [gin](https://gin-gonic.com/en/docs/)
 - [gorm](https://gorm.io/docs/)
@@ -9,7 +18,7 @@
 
 ### Tools
 
-- [live reload](https://github.com/codegangsta/gin)
+- [live reload](https://github.com/air-verse/air)
 
 ## Planning
 

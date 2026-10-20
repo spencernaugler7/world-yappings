@@ -29,6 +29,9 @@ go.work
 # ignore gin binary
 gin-bin
 
+# ignore the tmp dir
+/tmp
+
 # ignore the env file
 .env
 
