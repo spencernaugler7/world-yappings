@@ -1,4 +1,9 @@
-set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+[windows]
+set shell := ["powershell.exe", "-NoLogo", "-Command"]
+
+[unix]
+set shell := ["sh", "-cu"]
+
 alias b := build
 alias t := tidy
 
