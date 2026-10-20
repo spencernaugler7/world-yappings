@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"gorm.io/gorm"
 	"world.com/yappings/data"
 )
 
@@ -30,9 +31,8 @@ func main() {
 
 	server.Static("/assets", "./assets")
 	server.GET("/", func(c *gin.Context) {
-		var sayings []data.Saying
-		db.Find(&sayings)
-		// sayings, err := gorm.G[data.Saying](db)
+
+		sayings, err := gorm.G[data.Saying](db).Find(c)
 
 		if err != nil {
 			panic(err)
