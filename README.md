@@ -1,6 +1,6 @@
 # World Sayings Archive
 
-### setup
+### Setup
 
 install the [just](https://github.com/casey/just#installation) cmdline utility
 
