@@ -2,19 +2,12 @@ package data
 
 import (
 	"database/sql"
+	"errors"
 	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
-
-type DataError struct {
-	Message string
-}
-
-func (m *DataError) Error() string {
-	return m.Message
-}
 
 type Saying struct {
 	gorm.Model
@@ -39,7 +32,7 @@ type Tag struct {
 func SetUpDatabase() (*gorm.DB, error) {
 	connString := os.Getenv("WORLD_SAYINGS_CONNECTION_STRING")
 	if connString == "" {
-		return nil, &DataError{"Connection not resolved. Ensure you create a .env file modeled after .env.template"}
+		return nil, errors.New("Connection not resolved. Ensure you create a .env file modeled after .env.template")
 	}
 
 	db, err := gorm.Open(postgres.Open(connString), &gorm.Config{})
