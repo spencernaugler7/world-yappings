@@ -13,10 +13,10 @@ default: watch
 watch: server-watch open-firefox
 
 server-watch:
-    air server --port 3000
+    air server --port 8080
     
 open-firefox:
-    firefox --new-window "http://localhost:3000"
+    firefox --new-window "http://localhost:8080"
 
 build:
     go build main.go

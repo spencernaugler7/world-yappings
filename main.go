@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -25,12 +26,16 @@ func main() {
 		panic(err)
 	}
 
-	server := gin.Default()
 	templates := template.Must(template.ParseGlob("./templates/*.html"))
-	server.SetHTMLTemplate(templates)
 
-	server.Static("/assets", "./assets")
-	server.GET("/", func(c *gin.Context) {
+	router := gin.Default()
+	router.SetHTMLTemplate(templates)
+	router.Static("/assets", "./assets")
+
+	router.GET("/", func(ctx *gin.Context) {
+		ctx.Redirect(303, "/sayings")
+	})
+	router.GET("/sayings", func(c *gin.Context) {
 
 		sayings, err := gorm.G[data.Saying](db).Find(c)
 
@@ -44,7 +49,26 @@ func main() {
 		log.Println("Wrote the name")
 	})
 
-	if err := server.Run(); err != nil {
+	saying := router.Group("/saying")
+	saying.GET("/validate", func(ctx *gin.Context) {
+
+	})
+	saying.POST("/", func(c *gin.Context) {
+
+	})
+	saying.PUT("/", func(c *gin.Context) {
+
+	})
+
+	server := &http.Server{
+		Addr: ":8080",
+		Handler: router,
+		ReadTimeout: 10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("failed to run server: %v", err)
 	}
 }
