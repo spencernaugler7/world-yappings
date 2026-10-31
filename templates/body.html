@@ -1,34 +1,46 @@
+<header>
+    <div style="display: flex; justify-content: center;">
+        <h1>World Sayings</h1>
+    </div>
+</header>
+<main>
+    <section>
+        <article id="newSaying">
+            <form>
+                <label>
+                    Original
+                    <input
+                        name="original">
+                </label>
+                <label>
+                    Translated
+                    <input name="translated">
+                </label>
+                <label>
+                    Meaning
+                    <input name="meaning">
+                </label>
+                <label>
+                    When to Use
+                    <input name="whentouse">
+                </label>
+                <label>
+                    Tags: 
+                    <button id="addTag">+</button>
+                </label>
+            </form>
+        </article>
+    </section>
+    <section>
+        {{range $index, $saying := .sayings}}
+        <article id="{{$saying.ID}}">
+            <header>{{$saying.Original}}</header>
+            {{$saying.Translation}}
+            <footer>Tags</footer>
+        </article>
+        {{end}}
+    </section>
+</main>
+<footer>
 
-<article id="newSaying">
-    <form>
-        <label>
-            Original
-            <input
-                name="original">
-        </label>
-        <label>
-            Translated
-            <input name="translated">
-        </label>
-        <label>
-            Meaning
-            <input name="meaning">
-        </label>
-        <label>
-            When to Use
-            <input name="whentouse">
-        </label>
-        <label>
-            Tags: 
-            <button id="addTag">+</button>
-        </label>
-    </form>
-</article>
-
-{{range $index, $saying := .sayings}}
-<article>
-    <header>{{$saying.Original}}</header>
-    {{$saying.Translation}}
-    <footer>Tags</footer>
-</article>
-{{end}}
+</footer>
