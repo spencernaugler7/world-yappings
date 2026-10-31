@@ -6,23 +6,26 @@
 <main>
     <section>
         <article id="newSaying">
-            <form>
+            <form id="newSayingForm" hx-post="/saying/validate" hx-target="body">
                 <label>
                     Original
-                    <input
-                        name="original">
+                    <input name="original" hx->
+                    <small id="original-validator"></small>
                 </label>
                 <label>
                     Translated
                     <input name="translated">
+                    <small id="translated-validator"></small>
                 </label>
                 <label>
                     Meaning
                     <input name="meaning">
+                    <small id="meaning-validator"></small>
                 </label>
                 <label>
                     When to Use
                     <input name="whentouse">
+                    <small id="whentouse-validator"></small>
                 </label>
                 <label>
                     Tags: 
@@ -30,6 +33,14 @@
                 </label>
             </form>
         </article>
+
+        {{range $index, $saying := .sayings}}
+        <article>
+            <header>{{$saying.Original}}</header>
+            {{$saying.Translation}}
+            <footer>Tags</footer>
+        </article>
+        {{end}}
     </section>
     <section>
         {{range $index, $saying := .sayings}}
