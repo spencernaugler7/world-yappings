@@ -1,0 +1,9 @@
+
+{{define "body"}}
+    <h1>Errors occurred</h1>
+    {{range $index, $error := .errors}}
+        <article>
+            {{$error}}
+        </article>
+    {{end}}
+{{end}}
