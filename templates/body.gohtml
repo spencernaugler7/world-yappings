@@ -11,17 +11,17 @@
             <form id="newSayingForm" hx-post="/saying/validate" hx-target="body">
                 <label>
                     Original
-                    <input name="original" hx->
+                    <input name="original" required>
                     <small id="original-validator"></small>
                 </label>
                 <label>
                     Translated
-                    <input name="translated">
+                    <input name="translated" required>
                     <small id="translated-validator"></small>
                 </label>
                 <label>
                     Meaning
-                    <input name="meaning">
+                    <input name="meaning" required>
                     <small id="meaning-validator"></small>
                 </label>
                 <label>
