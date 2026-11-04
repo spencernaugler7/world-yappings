@@ -29,26 +29,27 @@ type Tag struct {
 	Sayings []*Saying `gorm:"many2many:Tag_Saying;"`
 }
 
-func SetUpDatabase() (*gorm.DB, error) {
+func GetDialector() (*gorm.Dialector, error) {
 	connString := os.Getenv("WORLD_SAYINGS_CONNECTION_STRING")
 	if connString == "" {
-		return nil, errors.New("Connection not resolved. Ensure you create a .env file modeled after .env.template")
+		return nil, errors.New("Connection string not resolved. Ensure you create a .env file modeled after .env.template")
 	}
 
-	db, err := gorm.Open(postgres.Open(connString), &gorm.Config{})
+	db := postgres.Open(connString)
+	return &db, nil
+}
+
+func Migrate(dialector *gorm.Dialector) error {
+	db, err := gorm.Open(*dialector, &gorm.Config{})
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	migrateError := db.AutoMigrate(
-		&Saying{},
-		&Tag{},
-	)
+	err = db.AutoMigrate(&Saying{}, &Tag{})
 
-	if migrateError != nil {
-		return nil, migrateError
+	if err != nil {
+		return err
 	}
-
-	return db, nil
+	return nil
 }
