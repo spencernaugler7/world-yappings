@@ -24,7 +24,7 @@ func main() {
 		panic(err)
 	}
 
-	dialector, err := data.GetDialector();
+	dialector, err := data.GetDialector()
 	if err != nil {
 		log.Fatal(err)
 		panic(err)
@@ -38,7 +38,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	env := &MainEnv{ &enviornment.Environment{ Dialector: *dialector }}
+	env := &MainEnv{&enviornment.Environment{Dialector: *dialector}}
 
 	routerEngine := gin.Default()
 
