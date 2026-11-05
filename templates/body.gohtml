@@ -35,14 +35,6 @@
                 </label>
             </form>
         </article>
-
-        {{range $index, $saying := .sayings}}
-        <article>
-            <header>{{$saying.Original}}</header>
-            {{$saying.Translation}}
-            <footer>Tags</footer>
-        </article>
-        {{end}}
     </section>
     <section>
         {{range $index, $saying := .sayings}}
