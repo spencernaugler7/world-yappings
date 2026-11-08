@@ -9,14 +9,8 @@ alias t := tidy
 
 default: watch
 
-[parallel]
-watch: server-watch open-firefox
-
-server-watch:
+watch:
     air server --port 8080
-    
-open-firefox:
-    firefox --new-window "http://localhost:8080"
 
 build:
     go build main.go
