@@ -1,0 +1,9 @@
+{{block "sayingsList" .}}
+    {{range $index, $saying := .sayings}}
+    <article id="{{$saying.ID}}">
+        <header>{{$saying.Original}}</header>
+        {{$saying.Translation}}
+        <footer>Tags</footer>
+    </article>
+    {{end}}
+{{end}}

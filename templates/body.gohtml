@@ -8,7 +8,13 @@
 <main>
     <section>
         <article id="newSaying">
-            <form id="newSayingForm" hx-post="/saying/validate" hx-target="body">
+            <form
+                method="post"
+                id="newSayingForm"
+                hx-post="/saying"
+                hx-target="#sayingsList"
+                hx-swap="innerHTML">
+
                 <label>
                     Original
                     <input name="original" required>
@@ -33,17 +39,13 @@
                     Tags:
                     <button id="addTag">+</button>
                 </label>
+
+                <input type="submit" value="Submit Saying"/>
             </form>
         </article>
     </section>
-    <section>
-        {{range $index, $saying := .sayings}}
-        <article id="{{$saying.ID}}">
-            <header>{{$saying.Original}}</header>
-            {{$saying.Translation}}
-            <footer>Tags</footer>
-        </article>
-        {{end}}
+    <section id="sayingsList">
+        {{block "sayingsList" .}}{{end}}
     </section>
 </main>
 <footer>

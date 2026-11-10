@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"flag"
 	"log"
 	"net/http"
@@ -42,11 +44,7 @@ func main() {
 
 	routerEngine := gin.Default()
 
-	multiRender := multitemplate.NewRenderer()
-	multiRender.AddFromFiles("main", "templates/index.gohtml", "templates/body.gohtml")
-	multiRender.AddFromFiles("error", "templates/index.gohtml", "templates/error-body.gohtml")
-	routerEngine.HTMLRender = multiRender
-
+	routerEngine.HTMLRender = createRenderer()
 	routerEngine.Static("/assets", "./assets")
 
 	routerEngine.Use(func(c *gin.Context) {
@@ -56,16 +54,16 @@ func main() {
 			c.HTML(http.StatusInternalServerError, "error", gin.H{"errors": errors})
 		}
 	})
+
 	routerEngine.GET("/", func(ctx *gin.Context) {
-		ctx.Redirect(303, "/sayings")
+		ctx.Redirect(http.StatusPermanentRedirect, "/sayings")
 	})
 	routerEngine.GET("/sayings", env.sayingsHandler)
 
 	sayingGroup := routerEngine.Group("/saying")
 	sayingGroup.GET("/validate", func(ctx *gin.Context) {
 	})
-	sayingGroup.POST("/", func(c *gin.Context) {
-	})
+	sayingGroup.POST("/", env.handleSayingPost)
 	sayingGroup.PUT("/", func(c *gin.Context) {
 	})
 
@@ -80,6 +78,14 @@ func main() {
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("failed to run server: %v", err)
 	}
+}
+
+func createRenderer() multitemplate.Renderer {
+	multiRender := multitemplate.NewRenderer()
+	multiRender.AddFromFiles("main", "templates/index.gohtml", "templates/body.gohtml", "templates/sayingsList.gohtml")
+	multiRender.AddFromFiles("error", "templates/index.gohtml", "templates/error-body.gohtml")
+	multiRender.AddFromFiles("sayingsList", "templates/sayingsList.gohtml")
+	return multiRender
 }
 
 type MainEnv struct {
@@ -103,5 +109,48 @@ func (env *MainEnv) sayingsHandler(ctx *gin.Context) {
 
 	ctx.HTML(http.StatusOK, "main", gin.H{
 		"sayings": sayings,
+	})
+}
+
+func (env *MainEnv) handleSayingPost(ctx *gin.Context) {
+
+	original := ctx.PostForm("original")
+	translated := ctx.PostForm("translated")
+	meaning := ctx.PostForm("meaning")
+	whentouse := ctx.PostForm("whentouse")
+
+	whentouseNull := sql.NullString{String: whentouse}
+
+	saying := data.Saying{
+		Original:    original,
+		Translation: translated,
+		Meaning:     meaning,
+		WhenToUse:   whentouseNull,
+	}
+
+	db, err := gorm.Open(env.Dialector, &gorm.Config{})
+
+	if err != nil {
+		ctx.Error(err)
+		return
+	}
+
+	bgCtx := context.Background()
+	err = gorm.G[data.Saying](db).Create(bgCtx, &saying)
+
+	if err != nil {
+		ctx.Error(err)
+		return
+	}
+
+	newSayings, err := gorm.G[data.Saying](db).Find(bgCtx)
+
+	if err != nil {
+		ctx.Error(err)
+		return
+	}
+
+	ctx.HTML(http.StatusOK, "sayingsList", gin.H{
+		"sayings": newSayings,
 	})
 }
